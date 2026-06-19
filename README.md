@@ -7,4 +7,4 @@ My dad retired as a programmer because he decided he was too old to learn new th
 
 I've written high-performance, hardware-aware C code for TCSEC-level security, OS service calls, radiology machines, and lots of other really hard applications.  After 53 years of coding in C, I'm disappointed to learn that I really don't know squat. Always under the gun: always learning little pieces of things, always getting it done and getting raises and promotions, but never getting the full picture.
 
-Dammit, Jim, I'm a C developer, not a junior programmer, and here's where I'm setting that right.
+Dammit, Jim, I'm a C developer, not a junior programmer.  Now that I'm retired, I'm setting that right.

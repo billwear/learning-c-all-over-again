@@ -17,6 +17,7 @@ Assuming today is **June 18, 2026**:
 | **Monthly Wildcard** | `06 *` | Matches if the number matches the current month and has a trailing `*`. | **MATCH** (All June events) |
 | **DOM Recurring** | `18` | Matches if a single number with no `*` matches the current day of the month. | **MATCH** (Every 18th) |
 | **Mismatch** | `06/18/2024` | Fails because the explicit year parameter is in the past. | **TODO** |
+| **Debug Output** | see program response | prints date and reminder tokenw with labels; should only happen with a debug option | **DONE** |
 | **Daily Reminder** | `daily` | matches every day of the year | ** TODO ** |
 | **Lowercase comparison** | all alpha strings | alpha is converted to lc before comparison |
 | **Weekend Reminders** | `weekend` | matches saturday or sunday | **TODO** |

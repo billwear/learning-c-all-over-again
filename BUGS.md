@@ -22,6 +22,6 @@ Bug Number :: Bug Text
 
 ---------------------------------------
 
-0006 :: the code doesn't handle ordinal days of the week (e.g., "3rd wednesday").
+0006 :: the code doesn't handle ordinal days of the week (e.g., "3rd wednesday"). :: **FIXED**
 
 ---------------------------------------

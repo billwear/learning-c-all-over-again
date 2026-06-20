@@ -19,7 +19,8 @@ Assuming today is **June 18, 2026**:
 | **Mismatch** | `06/18/2024` | Fails because the explicit year parameter is in the past. | **TODO** |
 | **Debug Output** | see program response | prints date and reminder tokenw with labels; should only happen with a debug option | **DONE** |
 | **Daily Reminder** | `daily` | matches every day of the year | ** TODO ** |
-| **Lowercase comparison** | all alpha strings | alpha is converted to lc before comparison |
-| **Weekend Reminders** | `weekend` | matches saturday or sunday | **TODO** |
-| **Weekday Reminder** | `weekday` | matches mon-fri | **TODO** |
-| **Day of Week** | e.g., `fri` | matches specified day of the week | **TODO** |
+| **Lowercase comparison** | all alpha strings | alpha is converted to lc before comparison | **DONE** |
+| **Weekend Reminders** | `weekend` | matches saturday or sunday | **DONE** |
+| **Weekday Reminder** | `weekday` | matches mon-fri | **DONE** |
+| **Day of Week** | e.g., `fri` | matches specified day of the week | **DONE** |
+| **Ordinal Day** | `3rd wed` | matches the specified occurrence of a given day in any month | **DONE** |

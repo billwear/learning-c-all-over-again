@@ -42,7 +42,7 @@ void lowercase_string(char *str)
 
 /**
  * @brief Evaluates an isolated date token against the current system date.
- * Handles: mm/dd/yyyy, mm/dd, "mm *" (entire month), dd (specific day), "daily", "weekday", "weekend", and days of the week.
+ * Handles structural formats, keywords, abbreviations, and ordinal strings (e.g., "3rd wednesday").
  */
 bool is_date_match(const char *date_token, const DateContext *today)
 {
@@ -61,7 +61,35 @@ bool is_date_match(const char *date_token, const DateContext *today)
         return (today->wday == 0 || today->wday == 6);
     }
 
-    // Bug 0004 & 0005: Match the first 3 letters of named days of the week
+    // Bug 0006: Check for Ordinal Weekdays (e.g., "1st mon", "3rd wednesday")
+    // Valid ordinal prefix candidates start with a digit: 1st, 2nd, 3rd, 4th, 5th
+    if (isdigit((unsigned char)date_token[0])) {
+        int ordinal = date_token[0] - '0';
+        // Verify it looks like an ordinal combination (e.g., "3rd " or "1st ")
+        if (ordinal >= 1 && ordinal <= 5 && (strstr(date_token, "st ") || 
+            strstr(date_token, "nd ") || strstr(date_token, "rd ") || strstr(date_token, "th "))) {
+            
+            // Find the start of the weekday name after the space
+            const char *day_part = strchr(date_token, ' ');
+            if (day_part != NULL) {
+                day_part++; // Jump past the space character
+                
+                const char *weekdays[] = {"sun", "mon", "tue", "wed", "thu", "fri", "sat"};
+                for (int i = 0; i < 7; i++) {
+                    if (strncmp(day_part, weekdays[i], 3) == 0) {
+                        // Check if current system day matches this weekday index
+                        if (today->wday == i) {
+                            // Check if today is the correct N-th instance of this weekday in the month
+                            int current_ordinal_instance = ((today->day - 1) / 7) + 1;
+                            return (current_ordinal_instance == ordinal);
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    // Bug 0004 & 0005: Match the first 3 letters of standard named days of the week
     const char *weekdays[] = {"sun", "mon", "tue", "wed", "thu", "fri", "sat"};
     for (int i = 0; i < 7; i++) {
         if (strncmp(date_token, weekdays[i], 3) == 0) {
@@ -89,7 +117,7 @@ bool is_date_match(const char *date_token, const DateContext *today)
             return (item1 == today->month);
         }
         
-        // If it's a completely alphabetic string, sscanf returns 0, so we only handle numeric fallback here
+        // No asterisk, so it defaults to matching the specific day of the month
         if (isdigit((unsigned char)date_token[0])) {
             return (item1 == today->day);
         }

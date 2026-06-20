@@ -14,7 +14,7 @@ Bug Number :: Bug Text
 
 ---------------------------------------
 
-0004 :: the output doesn't handle days of the week like "Tue", "tues", "tuesday", or "Tuesday".
+0004 :: the output doesn't handle days of the week like "Tue", "tues", "tuesday", or "Tuesday". **FIXED**
 
 ---------------------------------------
 

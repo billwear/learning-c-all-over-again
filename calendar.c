@@ -41,10 +41,15 @@ void lowercase_string(char *str)
 
 /**
  * @brief Evaluates an isolated date token against the current system date.
- * Handles: mm/dd/yyyy, mm/dd, "mm *" (entire month), and dd (specific day)
+ * Handles: mm/dd/yyyy, mm/dd, "mm *" (entire month), dd (specific day), and "daily"
  */
 bool is_date_match(const char *date_token, const DateContext *today)
 {
+    // Bug 0002: Check for the "daily" string variant
+    if (strcmp(date_token, "daily") == 0) {
+        return true;
+    }
+
     int item1 = 0, item2 = 0, item3 = 0;
     int tokens_found = sscanf(date_token, "%d/%d/%d", &item1, &item2, &item3);
 

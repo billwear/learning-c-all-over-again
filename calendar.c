@@ -10,10 +10,11 @@
 #include <stdlib.h>
 #include <string.h>
 #include <stdbool.h>
+#include <ctype.h>
 #include <time.h>
 
 #ifndef CALENDAR_VERSION
-#define CALENDAR_VERSION "0.5.0"
+#define CALENDAR_VERSION "0.4.0"
 #endif
 
 typedef struct {
@@ -25,6 +26,18 @@ typedef struct {
 /* Forward Declarations */
 bool parse_calendar_line(char *line_buffer, const DateContext *today, bool debug_mode);
 bool is_date_match(const char *date_token, const DateContext *today);
+void lowercase_string(char *str);
+
+/**
+ * @brief Converts a string to lowercase in-place.
+ */
+void lowercase_string(char *str)
+{
+    if (!str) return;
+    for (int i = 0; str[i]; i++) {
+        str[i] = (char)tolower((unsigned char)str[i]);
+    }
+}
 
 /**
  * @brief Evaluates an isolated date token against the current system date.
@@ -46,14 +59,16 @@ bool is_date_match(const char *date_token, const DateContext *today)
     } 
     
     if (tokens_found == 1) {
-        // I need to check if this is a month wildcard (e.g., "06 *") or a day wildcard ("18")
+        // Check if this is a month wildcard (e.g., "06 *") or a day wildcard ("18")
         if (strchr(date_token, '*') != NULL) {
             // Found an asterisk, so item1 represents an entire month
             return (item1 == today->month);
         }
         
-        // No asterisk, so it defaults to matching the specific day of the month
-        return (item1 == today->day);
+        // If it's a completely alphabetic string, sscanf returns 0, so we only handle numeric fallback here
+        if (isdigit((unsigned char)date_token[0])) {
+            return (item1 == today->day);
+        }
     }
 
     return false;
@@ -72,15 +87,22 @@ bool parse_calendar_line(char *line_buffer, const DateContext *today, bool debug
         return false;
     }
 
-    if (is_date_match(date_token, today)) {
+    // Bug 0005: Create a copy of the date token and make it lowercase for easy comparison
+    char *lc_date_token = strdup(date_token);
+    if (lc_date_token == NULL) return false;
+    lowercase_string(lc_date_token);
+
+    if (is_date_match(lc_date_token, today)) {
         if (debug_mode) {
             printf("Date: %-10s | Event: %s\n", date_token, desc_token);
         } else {
             printf("%s\n", desc_token);
         }
+        free(lc_date_token);
         return true;
     }
 
+    free(lc_date_token);
     return false;
 }
 

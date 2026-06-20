@@ -12,7 +12,7 @@ else
 endif
 
 # Project Information
-VERSION := 0.8.0
+VERSION := 0.9.0
 
 # Compiler configuration
 CFLAGS  := -std=c99 -Wall -Wextra -Wpedantic -Wshadow -O2

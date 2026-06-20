@@ -42,7 +42,7 @@ void lowercase_string(char *str)
 
 /**
  * @brief Evaluates an isolated date token against the current system date.
- * Handles: mm/dd/yyyy, mm/dd, "mm *" (entire month), dd (specific day), "daily", "weekday", and "weekend"
+ * Handles: mm/dd/yyyy, mm/dd, "mm *" (entire month), dd (specific day), "daily", "weekday", "weekend", and days of the week.
  */
 bool is_date_match(const char *date_token, const DateContext *today)
 {
@@ -59,6 +59,14 @@ bool is_date_match(const char *date_token, const DateContext *today)
     // Bug 0003: Check for "weekend" (Sunday or Saturday: 0 or 6)
     if (strcmp(date_token, "weekend") == 0) {
         return (today->wday == 0 || today->wday == 6);
+    }
+
+    // Bug 0004 & 0005: Match the first 3 letters of named days of the week
+    const char *weekdays[] = {"sun", "mon", "tue", "wed", "thu", "fri", "sat"};
+    for (int i = 0; i < 7; i++) {
+        if (strncmp(date_token, weekdays[i], 3) == 0) {
+            return (today->wday == i);
+        }
     }
 
     int item1 = 0, item2 = 0, item3 = 0;

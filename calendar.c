@@ -21,6 +21,7 @@ typedef struct {
     int day;
     int month;
     int year;
+    int wday; /* Day of the week: 0 = Sunday, 1 = Monday, ..., 6 = Saturday */
 } DateContext;
 
 /* Forward Declarations */
@@ -41,13 +42,23 @@ void lowercase_string(char *str)
 
 /**
  * @brief Evaluates an isolated date token against the current system date.
- * Handles: mm/dd/yyyy, mm/dd, "mm *" (entire month), dd (specific day), and "daily"
+ * Handles: mm/dd/yyyy, mm/dd, "mm *" (entire month), dd (specific day), "daily", "weekday", and "weekend"
  */
 bool is_date_match(const char *date_token, const DateContext *today)
 {
     // Bug 0002: Check for the "daily" string variant
     if (strcmp(date_token, "daily") == 0) {
         return true;
+    }
+
+    // Bug 0003: Check for "weekday" (Monday through Friday: 1 to 5)
+    if (strcmp(date_token, "weekday") == 0) {
+        return (today->wday >= 1 && today->wday <= 5);
+    }
+
+    // Bug 0003: Check for "weekend" (Sunday or Saturday: 0 or 6)
+    if (strcmp(date_token, "weekend") == 0) {
+        return (today->wday == 0 || today->wday == 6);
     }
 
     int item1 = 0, item2 = 0, item3 = 0;
@@ -134,7 +145,8 @@ int main(int argc, char *argv[])
     DateContext today = {
         .day   = time_info->tm_mday,
         .month = time_info->tm_mon + 1,
-        .year  = time_info->tm_year + 1900
+        .year  = time_info->tm_year + 1900,
+        .wday  = time_info->tm_wday // Saved to support weekday/weekend tracking
     };
 
     const char *home_dir = getenv("HOME");

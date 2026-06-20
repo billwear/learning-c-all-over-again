@@ -10,7 +10,7 @@ Bug Number :: Bug Text
 
 ---------------------------------------
 
-0003 :: code doesn't parse the date variants "weekday" and "weekend" which should print "weekday" lines on monday through friday, and "weekend" lines on saturday and sunday.
+0003 :: code doesn't parse the date variants "weekday" and "weekend" which should print "weekday" lines on monday through friday, and "weekend" lines on saturday and sunday. :: **FIXED**
 
 ---------------------------------------
 
